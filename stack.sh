@@ -32,6 +32,8 @@
 # POSSIBILITY OF SUCH DAMAGE.                                                 #
 ###############################################################################
 
+# SOURCE: https://github.com/bmc/lib-sh/blob/master/stack.sh
+
 
 # A stack, using bash arrays.
 # ---------------------------------------------------------------------------
