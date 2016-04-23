@@ -157,17 +157,17 @@ while [[ $position -lt $full_length ]] ; do
 		
 		stack_pop "mode" "last_mode"
 		if [[ $last_mode == 'l' ]] ; then
-			echo "]"
+			printf "]"
 		else
-			echo "}"
+			printf "}"
 		fi
 
 		(( position ++ ))
 		read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
-		if [[ $read_char != 'e' ]] ; then
-			echo ','
+		if [[ ( $read_char == 'e' ) || ( $depth == 0 ) ]] ; then
+			echo 
 		else
-			echo
+			echo ','
 		fi
 	done
 done
