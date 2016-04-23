@@ -120,7 +120,9 @@ while [[ $position -lt $full_length ]] ; do
 
 
 	#read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
+	value_type=""
 	if [[ $read_char =~ [0-9] ]] ; then
+		value_type="s"
 		# GET VALUE LENGTH
 		value_len=0
 		read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
@@ -137,6 +139,7 @@ while [[ $position -lt $full_length ]] ; do
 		(( position += value_len ))
 	
 	elif [[ $read_char =~ 'i' ]] ; then
+		value_type="i"
 		value_len=0
 		value=0
 		read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
@@ -161,10 +164,18 @@ while [[ $position -lt $full_length ]] ; do
 		value="[...]"
 	fi
 
-	if [[ $current_mode == 'l' ]] ;then
-		printf '"%s"' "$value"
+	if [[ $current_mode == 'l' ]] ; then
+		if [[ $value_type == 'i' ]] ; then
+			printf '%s' "$value"
+		else
+			printf '"%s"' "$value"
+		fi
 	else
-		printf '"%s": "%s"' "$key" "$value"
+		if [[ $value_type == 'i' ]] ; then
+			printf '"%s": %s' "$key" "$value"
+		else
+			printf '"%s": "%s"' "$key" "$value"
+		fi
 	fi
 
 	read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
