@@ -139,9 +139,13 @@ while [[ $position -lt $full_length ]] ; do
 	else
 		printf '"%s": "%s"' "$key" "$value"
 	fi
-	echo
 
 	read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
+	if [[ $read_char != 'e' ]] ; then
+		echo ','
+	else
+		echo
+	fi
 	while [[ $read_char == 'e' ]] ; do
 		# OUTPUT DATA
 		(( depth -- ))
@@ -160,6 +164,11 @@ while [[ $position -lt $full_length ]] ; do
 
 		(( position ++ ))
 		read_char=$(dd "if=${TORRENT_PATH}" bs=1 count=1 skip=$position 2> /dev/null)
+		if [[ $read_char != 'e' ]] ; then
+			echo ','
+		else
+			echo
+		fi
 	done
 done
 
