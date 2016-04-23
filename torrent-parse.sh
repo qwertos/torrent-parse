@@ -54,8 +54,12 @@ while [[ $position -lt $full_length ]] ; do
 			echo -ne "\t"
 			(( i -- ))
 		done
-		
-		printf '"%s": {' "$key"
+	
+		if [[ $current_mode == 'l' ]] ; then
+			printf '{'
+		else	
+			printf '"%s": {' "$key"
+		fi
 		echo
 
 		(( depth ++ ))
@@ -73,7 +77,11 @@ while [[ $position -lt $full_length ]] ; do
 			(( i -- ))
 		done
 		
-		printf '"%s": [' "$key"
+		if [[ $current_mode == 'l' ]] ; then
+			printf '['
+		else	
+			printf '"%s": [' "$key"
+		fi
 		echo
 
 		(( depth ++ ))
